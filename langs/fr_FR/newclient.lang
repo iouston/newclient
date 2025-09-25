@@ -60,7 +60,7 @@ ChangeLogDate = Date
 ChangeLogUpdates = Modification apportées
 FirstVersion = Première version
 #
-NewClientStatistics = Suivi des nouveaux clients
+NewClientStatistics = Acquisition nouveaux clients
 NumberOfNewClientByMonth = Évolution du nombre de nouveaux clients par mois et par an
 CAGeneratedByNewClient = CA généré par les nouveaux clients depuis : 
 NBFac = Nb factures
@@ -69,3 +69,4 @@ NewClientGeneratedCA = nouveaux clients ont générés du CA
 HelpNewClientStatistics = Les nouveaux clients sont calculés par rapport à la date de signature du premier devis. Un client dont le devis a été passé 'signé' en 08/2025 est comptabilisé en 08/2025. Attention ! on prend en compte les nouveaux clients sur l'entité, y compris si ce sont des clients partagés entre entités dans le cas de multisociete.
 HelpCACalculMethod = Le CA est calculé sur les factures générées sur l'année par les clients à partir de la date de signature du premier devis correspondant au mois et à l'année prise en compte. Autrement dit on prend en compte toutes les factures de l'année 2025 d'un client qui aurait signé son devis en septembre 2025 si on filtre sur 09/2025.
 NewClientMenu = Suivi nouveaux clients
+NewClientTab = Suivi nouveaux clients

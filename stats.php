@@ -75,11 +75,12 @@ $datacolors=$px1->datacolor;
 
 llxHeader();
 
-$picto = 'newclient@newclient';
+$picto = 'evolgraph@newclient';
+$picto2 = 'piggy@newclient';
 $title = $langs->trans("NewClientStatistics").' '.img_info($langs->trans('HelpNewClientStatistics'));
 $dir = $conf->facture->dir_temp;
 
-print load_fiche_titre($title, '', $picto);
+
 
 dol_mkdir($dir);
 $y = date('Y');
@@ -165,15 +166,16 @@ $px1->draw($filenamenb, $fileurlnb);
 
 $h = 0;
 $head = array();
-$head[$h][0] = DOL_URL_ROOT.'/compta/facture/stats/index.php?mode='.urlencode($mode);
-$head[$h][1] = $langs->trans("NewClient");
+$head[$h][0] = DOL_URL_ROOT.'/newclient/stats.php';
+$head[$h][1] = $langs->trans("NewClientTab");
 $head[$h][2] = 'newcustomer';
 $h++;
 
 complete_head_from_modules($conf, $langs, null, $head, $h, $type);
 
-print dol_get_fiche_head($head, 'byyear', $langs->trans("Statistics"), -1);
+print dol_get_fiche_head($head, 'newcustomer', $langs->trans("Statistics"), -1);
 
+print load_fiche_titre($title, '', $picto);
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
 // Show filter box
@@ -249,7 +251,7 @@ print '<div class="clearboth"></div>';
 
 print $out;
 
-print load_fiche_titre($langs->trans('CAGeneratedByNewClient').$year.'-'.$month.' '.img_info($langs->trans('HelpCACalculMethod')), '', $picto);
+print load_fiche_titre($langs->trans('CAGeneratedByNewClient').$year.'-'.$month.' '.img_info($langs->trans('HelpCACalculMethod')), '', $picto2);
 
 $infosCA = $newclient->getCAFromNewClient($year,$month,$userid);
 $out = '<table class="noborder centpercent">';
