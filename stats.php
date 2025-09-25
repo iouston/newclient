@@ -149,7 +149,7 @@ if (!$mesg) {
 		$legend[] = $i;
 		$i++;
 	}
-
+$px1->SetWidth('');//largeur auto
 $px1->SetData($datagraph);
 $px1->SetLegend($legend);
 $px1->SetYLabel($langs->trans("NumberOfNewClient"));
@@ -160,7 +160,15 @@ $px1->draw($filenamenb, $fileurlnb);
 
 
 
+
 }
+
+$h = 0;
+$head = array();
+$head[$h][0] = DOL_URL_ROOT.'/compta/facture/stats/index.php?mode='.urlencode($mode);
+$head[$h][1] = $langs->trans("NewClient");
+$head[$h][2] = 'newcustomer';
+$h++;
 
 complete_head_from_modules($conf, $langs, null, $head, $h, $type);
 
