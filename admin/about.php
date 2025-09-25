@@ -48,15 +48,7 @@ if (! $user->admin) {
 }
 
 $versions = array(
-	array('version' => '1.0.8', 'date' => '23/08/2024', 'updates' => $langs->trans('update108')),
-	array('version' => '1.0.7', 'date' => '16/02/2023', 'updates' => $langs->trans('update107')),
-    array('version' => '1.0.6', 'date' => '25/01/2023', 'updates' => $langs->trans('20230125update')),
-    array('version' => '1.0.5', 'date' => '06/05/2022', 'updates' => $langs->trans('20220506update')),
-    array('version' => '1.0.4', 'date' => '21/02/2022', 'updates' => $langs->trans('20220221update')),
-    array('version' => '1.0.3', 'date' => '29/06/2021', 'updates' => $langs->trans('20210629update')),
-    array('version' => '1.0.2', 'date' => '28/09/2020', 'updates' => $langs->trans('20200928Update')),
-    array('version' => '1.0.1', 'date' => '04/06/2020', 'updates' => $langs->trans('20200604Update')),
-    array('version' => '1.0.0', 'date' => '29/08/2018', 'updates' => $langs->trans('FirstVersion')),
+    array('version' => '1.0.0', 'date' => '25/09/2025', 'updates' => $langs->trans('FirstVersion')),
 );
 
 /*
@@ -65,31 +57,31 @@ $versions = array(
 
 $form = new Form($db);
 
-llxHeader('', $langs->trans('FraisAutoAbout'));
+llxHeader('', $langs->trans('NewClientAbout'));
 
 // Subheader
 $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">'. $langs->trans("BackToModuleList") . '</a>';
-print load_fiche_titre($langs->trans('FraisAutoAbout'), $linkback);
+print load_fiche_titre($langs->trans('NewClientAbout'), $linkback);
 
 // Configuration header
 $head = newclient_prepare_admin_head();
 dol_fiche_head(
 	$head,
 	'about',
-	$langs->trans("ModuleFraisAutoName"),
+	$langs->trans("ModuleNewClientName"),
 	0,
 	'newclient@newclient'
 );
 
 // About page goes here
-echo $langs->trans("FraisAutoAboutPage");
+echo $langs->trans("NewClientAboutPage");
 
 echo '<br />';
 
-$url = 'http://www.iouston.com/systeme-gestion-entreprise-dolibarr/modules-dolibarr/module-dolibarr-frais-auto';
+$url = 'https://www.iouston.com/module-dolibarr/suivi-nouveaux-clients/';
 
 print '<h2>'.$langs->trans("About").'</h2>';
-print $langs->transnoentities("FraisAutoAboutDescLong", $url, $url);
+print $langs->transnoentities("NewClientAboutDescLong", $url, $url);
 
 print '<h2>'.$langs->trans("MaintenanceAndSupportTitle").'</h2>';
 print $langs->transnoentities("MaintenanceAndSupportDescLong");
