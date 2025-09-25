@@ -65,24 +65,32 @@ class NewClient extends CommonObject
  *  @param int $fk_user  User ID of proposal author (0 = all users)
  *  @return array        Array with key = month, value = nb of customers
  */
+
 public function getNbByMonthYear($year, $fk_user = 0)
 {
-    global $db;
+    global $db, $conf;
 
-    $sql = "SELECT MONTH(se.date_signature_premier_devis) as month,";
+    $sql  = "SELECT";
+    $sql .= " MONTH(se.date_signature_premier_devis) as month,";
     $sql .= " COUNT(DISTINCT s.rowid) as nb";
     $sql .= " FROM ".MAIN_DB_PREFIX."societe_extrafields se";
-    $sql .= " INNER JOIN ".MAIN_DB_PREFIX."societe s ON s.rowid = se.fk_object";
-    $sql .= " INNER JOIN ".MAIN_DB_PREFIX."propal p ON p.fk_soc = s.rowid";
-    $sql .= " WHERE se.date_signature_premier_devis  IS NOT NULL";
-    $sql .= " AND YEAR(se.date_signature_premier_devis ) = ".((int) $year);
+    $sql .= " INNER JOIN ".MAIN_DB_PREFIX."societe s";
+    $sql .= "   ON s.rowid = se.fk_object";
+    $sql .= " INNER JOIN ".MAIN_DB_PREFIX."propal p";
+    $sql .= "   ON p.fk_soc = s.rowid";
+    $sql .= "  AND DATE(p.date_signature) = DATE(se.date_signature_premier_devis)";
+    $sql .= " WHERE se.date_signature_premier_devis IS NOT NULL";
+    $sql .= " AND YEAR(se.date_signature_premier_devis) = ".((int) $year);
+    //$sql .= " AND s.entity = ".((int) $conf->entity);
+    $sql .= " AND p.entity = ".((int) $conf->entity);
 
     if ($fk_user > 0) {
         $sql .= " AND p.fk_user_author = ".((int) $fk_user);
     }
-    $sql .= " GROUP BY MONTH(se.date_signature_premier_devis )";
-    $sql .= " ORDER BY month";
 
+    $sql .= " GROUP BY MONTH(se.date_signature_premier_devis)";
+    $sql .= " ORDER BY month";
+// echo $sql;
     $resql = $db->query($sql);
     if (!$resql) {
         dol_syslog(get_class($this)."::getNbByMonthYear sql=".$sql." - ".$db->lasterror(), LOG_ERR);
@@ -100,46 +108,71 @@ public function getNbByMonthYear($year, $fk_user = 0)
     return $result;
 }
 
-	function getCAFromNewClient($year,$month){
-		global $db, $conf;
-		$result = array();
-	    $sql = "SELECT f.fk_soc as socid, f.total_ht as total_ht, f.ref as facref, f.rowid as facid, s.nom as snom, s.zip as szip, s.town as stown ";
-	    $sql.= "FROM llx_facture as f ";
-	    $sql.= "JOIN llx_societe as s ON s.rowid=fk_soc ";
-	    $sql.= "WHERE f.fk_soc IN ( ";
-	    $sql.= "SELECT se.fk_object as ids FROM llx_societe_extrafields as se WHERE se.date_signature_premier_devis >= '".$year."-".$month."-01')";
-		$sql.= " AND f.datef>='".$year."-01-01' AND f.entity=".$conf->entity." and f.fk_statut IN(1,2)"; 
-			
-		$resql = $db->query($sql);
-	    if (!$resql) {
-	        dol_syslog(get_class($this)."::getCAFromNewClient sql=".$sql." - ".$db->lasterror(), LOG_ERR);
-	        return $result;
-	    }
-	    
-	    while ($obj = $db->fetch_object($resql)) {
-	        $result[$obj->socid]['rowid']=$obj->socid;
-	        $result[$obj->socid]['nom']=$obj->snom;
-	        $result[$obj->socid]['zip']=$obj->szip;
-	        $result[$obj->socid]['town']=$obj->stown;
-	        $result[$obj->socid]['societe_total_ht']+=$obj->total_ht;
-	        $result[$obj->socid]['fac'][$obj->facid] = array('rowid'=>$obj->facid,'ref'=>$obj->facref,'total_ht'=>$obj->total_ht);
-	        $result['total_total_ht']+=$obj->total_ht;
-	    }
+	public function getCAFromNewClient($year, $month, $fk_user = 0)
+{
+    global $db, $conf;
 
-	    $total_total_ht = $result['total_total_ht'];
-		unset($result['total_total_ht']);
+    $result = array();
 
-		// Tri décroissant sur societe_total_ht
-		uasort($result, function($a, $b) {
-    	return $b['societe_total_ht'] <=> $a['societe_total_ht'];
-		});
+    $sql  = "SELECT";
+    $sql .= " f.fk_soc AS socid,";
+    $sql .= " f.total_ht AS total_ht,";
+    $sql .= " f.ref AS facref,";
+    $sql .= " f.rowid AS facid,";
+    $sql .= " s.nom AS snom,";
+    $sql .= " s.zip AS szip,";
+    $sql .= " s.town AS stown,";
+    $sql .= " p.fk_user_author AS propal_author";
+    $sql .= " FROM ".MAIN_DB_PREFIX."facture f";
+    $sql .= " JOIN ".MAIN_DB_PREFIX."societe s ON s.rowid = f.fk_soc";
+    $sql .= " JOIN ".MAIN_DB_PREFIX."societe_extrafields se ON se.fk_object = s.rowid";
+    $sql .= " JOIN ".MAIN_DB_PREFIX."propal p ON p.fk_soc = s.rowid";
+    $sql .= "   AND DATE(p.date_signature) = DATE(se.date_signature_premier_devis)";
+    $sql .= " WHERE se.date_signature_premier_devis >= '".$db->escape($year)."-".$db->escape($month)."-01'";
+    $sql .= "   AND f.datef >= '".$db->escape($year)."-01-01'";
+    $sql .= "   AND f.entity = ".((int) $conf->entity);
+    $sql .= "   AND s.entity = ".((int) $conf->entity);
+    $sql .= "   AND p.entity = ".((int) $conf->entity);
+    $sql .= "   AND f.fk_statut IN (1,2)";
 
-		// On remet total_total_ht à la fin
-		$result['total_total_ht'] = $total_total_ht;
+    if ($fk_user > 0) {
+        $sql .= "   AND p.fk_user_author = ".((int) $fk_user);
+    }
 
+    $resql = $db->query($sql);
+    if (!$resql) {
+        dol_syslog(get_class($this)."::getCAFromNewClient sql=".$sql." - ".$db->lasterror(), LOG_ERR);
+        return $result;
+    }
 
-	    $db->free($resql);
-	    return $result;
+    while ($obj = $db->fetch_object($resql)) {
+        $result[$obj->socid]['rowid']  = $obj->socid;
+        $result[$obj->socid]['nom']    = $obj->snom;
+        $result[$obj->socid]['zip']    = $obj->szip;
+        $result[$obj->socid]['town']   = $obj->stown;
+        $result[$obj->socid]['propal_author'] = $obj->propal_author; // 🔑 commercial du 1er devis signé
+        $result[$obj->socid]['societe_total_ht'] += $obj->total_ht;
+        $result[$obj->socid]['fac'][$obj->facid] = array(
+            'rowid'     => $obj->facid,
+            'ref'       => $obj->facref,
+            'total_ht'  => $obj->total_ht
+        );
+        $result['total_total_ht'] += $obj->total_ht;
+    }
+
+    $total_total_ht = $result['total_total_ht'];
+    unset($result['total_total_ht']);
+
+    // Tri décroissant par CA société
+    uasort($result, function($a, $b) {
+        return $b['societe_total_ht'] <=> $a['societe_total_ht'];
+    });
+
+    // On remet total_total_ht à la fin
+    $result['total_total_ht'] = $total_total_ht;
+
+    $db->free($resql);
+
+    return $result;
 	}
-	
 }

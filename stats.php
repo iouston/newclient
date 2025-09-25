@@ -59,8 +59,8 @@ $year = GETPOST('year') > 0 ? GETPOST('year', 'int') : $nowyear;
 $nowmonth = dol_print_date(dol_now('gmt'), "%m", 'gmt');
 $month = GETPOST('month') > 0 ? GETPOST('month', 'int') : $nowmonth;
 
-// $startyear = $year - (empty($conf->global->MAIN_STATS_GRAPHS_SHOW_N_YEARS) ? 2 : max(1, min(10, $conf->global->MAIN_STATS_GRAPHS_SHOW_N_YEARS)));
-// $endyear = $year;
+$startyear = $year ;
+$endyear = $year - (empty($conf->global->MAIN_STATS_GRAPHS_SHOW_N_YEARS) ? 2 : max(1, min(10, $conf->global->MAIN_STATS_GRAPHS_SHOW_N_YEARS)));
 
 
 /*
@@ -70,11 +70,13 @@ $form = new Form($db);
 $formcompany = new FormCompany($db);
 $formother = new FormOther($db);
 $newclient = new NewClient($db);
+$px1 = new DolGraph();
+$datacolors=$px1->datacolor;
 
 llxHeader();
 
 $picto = 'newclient@newclient';
-$title = $langs->trans("NewClientStatistics");
+$title = $langs->trans("NewClientStatistics").' '.img_info($langs->trans('HelpNewClientStatistics'));
 $dir = $conf->facture->dir_temp;
 
 print load_fiche_titre($title, '', $picto);
@@ -97,18 +99,19 @@ $out.= '</tr>';
 for ($i = 0; $i < 3; $i++) {
 	$year = $y - $i;
 	$arrayyears[]=$year;
-	$stats = $newclient->getNbByMonthYear($year);
-	
+	$stats = $newclient->getNbByMonthYear($year,$userid);
+	$style=' style="background-color: rgb('.$datacolors[2-$i][0].','.$datacolors[2-$i][1].','.$datacolors[2-$i][2].') !important;" ';
 	$out.= '<tr>';
-	$out.= '<td>'.$year.'</td>';
+	$out.= '<td '.$style.'>'.$year.'</td>';
 	
 	for ($m = 1; $m <= 12; $m++) {
 	    $val = isset($stats[$m]) ? $stats[$m] : 0;
 	    $data[$year][$m]=$val;
 	    $total +=$val;
-	    $out.= '<td align="center">'.$val.'</td>';
+	    $out.= '<td '.$style.' align="center">'.$val.'</td>';
 	}
-	$out.= '<td>'.$total.'</td>';
+	$out.= '<td '.$style.'><b>'.$total.'</b></td>';
+	$total=0;
 	$out.= '</tr>';
 }
 $out.= '</table>';
@@ -136,17 +139,17 @@ foreach ($datatransposed as $monthdata => $years) {
     $datagraph[] = $line;
 }
 
-$px1 = new DolGraph();
+
 $mesg = $px1->isGraphKo();
 if (!$mesg) {
 	$px1->SetData($datatransposed);
-	$i = $startyear;
+	$i = $endyear;
 	$legend = array();
-	while ($i <= $endyear) {
+	while ($i <= $startyear) {
 		$legend[] = $i;
 		$i++;
 	}
-$px1 = new DolGraph();
+
 $px1->SetData($datagraph);
 $px1->SetLegend($legend);
 $px1->SetYLabel($langs->trans("NumberOfNewClient"));
@@ -154,6 +157,9 @@ $px1->SetHorizTickIncrement(1);
 $px1->SetMaxValue($px1->GetCeilMaxValue());
 $px1->SetTitle($langs->trans("NumberOfNewClientByMonth"));
 $px1->draw($filenamenb, $fileurlnb);
+
+
+
 }
 
 complete_head_from_modules($conf, $langs, null, $head, $h, $type);
@@ -235,9 +241,9 @@ print '<div class="clearboth"></div>';
 
 print $out;
 
-print load_fiche_titre($langs->trans('CAGeneratedByNewClient').$year.'-'.$month, '', $picto);
+print load_fiche_titre($langs->trans('CAGeneratedByNewClient').$year.'-'.$month.' '.img_info($langs->trans('HelpCACalculMethod')), '', $picto);
 
-$infosCA = $newclient->getCAFromNewClient($year,$month);
+$infosCA = $newclient->getCAFromNewClient($year,$month,$userid);
 $out = '<table class="noborder centpercent">';
 $out.= '<tr class="liste_titre">';
 $out.= '<td>'.$langs->trans('Customer').'</td>';
