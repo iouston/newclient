@@ -1,0 +1,68 @@
+# Copyright (C) 2017 Mikael Carlavan <contact@mika-carl.fr>
+# Copyright (C) 2025 Julien Marchand <julien.marchand@iouston.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#
+# Générique
+#
+
+# Module label 'ModuleNewClientName'
+ModuleNewClientName = Suivi nouveau client
+# Module description 'ModuleNewClientDesc'
+ModuleNewClientDesc = Permet de suivre l'évolution de l'acquisition de nouveaux clients !
+
+#
+#
+NewClientSetup = Configuration du module
+Settings = Réglages
+NewClientSetupPage = Le module de suivi des nouveaux clients enregistre au niveau de la fiche du tiers la date de signature du premier devis.A la signature du premier devis, un message de félicitations est affiché avec un gif animé pour encourager les équipes. Vous pouvez également mettre à jour toute votre base de données pour indiquer la date d'acquisition de chaque client existant.
+
+NewClientOptions = Options
+Settingslist = Liste des options du module
+NewClientUpdateAll = Indiquer pour tous les clients la date de signature du premier devis
+GoUpdateAll = Lancer la mise à jour en masse
+NewClientMassUpdateDone = Date de signature du premier devis mise à jour pour tous les clients
+NewClientErrorMassUpdate = Erreur lors de la mise à jour en masse : 
+NewClientShowRandomGiff = Afficher une image aléatoire dans le message de félicitation
+DescNEWCLIENT_LIST_GIF = Lien vers les .gif animés qui seront affichés aléatoirement.
+
+#
+# Page À propos
+#
+About = À propos
+NewClientAbout = À propos du module
+NewClientAboutPage = Page à propos du module
+NewClientAboutDescLong = Ce module a été développé par <a href="https://www.iouston.com">Julien Marchand</a> pour <a href="http://www.iouston.com">iouston informatique </a>.<br />La documentation du module est disponible en ligne :<br /><a href="%s">%s</a>
+MaintenanceAndSupportTitle = Maintenance et support
+MaintenanceAndSupportDescLong = Aucun support à l'utilisation ou à l'installation n'est fourni. Si besoin, nous pouvons vous accompagner moyennant la prise en charge par vos soins du coût de l’intervention.   <br />L'achat de ce module vous permet d'obtenir une maintenance corrective durant un an à compter de la date d'acquisition. Les <a href="https://iouston.space/gestion/ticketsup/public/">demandes de support doivent être réalisées via notre plateforme de support</a>.
+UpdateTitle = Mise à jour
+UpdateDescLong = L'achat de ce module vous permet d'obtenir gratuitement les mises à jour du module pendant 1 an à compter de la date d’achat du module.
+ModulesTitle = Nos autres modules :
+ModulesDescLong = Retrouvez tous <a href="http://www.iouston.com/systeme-gestion-entreprise-dolibarr/modules-dolibarr/">nos autres modules sur notre site</a> et sur <a href="https://www.dolistore.com/fr/recherche?controller=search&orderby=position&orderway=desc&search_query=iouston&submit_search=">dolistore</a>.
+IoustonDesc = Spécialiste dolibarr : Intégration sur mesure, développement spécifique, formation, maintenance.
+
+# ChangeLog
+ChangeLog = ChangeLog
+ChangeLogVersion = Version
+ChangeLogDate = Date
+ChangeLogUpdates = Modification apportées
+FirstVersion = Première version
+#
+NewClientStatistics = Suivi des nouveaux clients
+NumberOfNewClientByMonth = Évolution du nombre de nouveaux clients par mois et par an
+CAGeneratedByNewClient = CA généré par les nouveaux clients depuis : 
+NBFac = Nb factures
+CAGenerated = CA HT
+NewClientGeneratedCA = nouveaux clients ont générés du CA
