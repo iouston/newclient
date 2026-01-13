@@ -105,10 +105,7 @@ class InterfaceNewClientTriggers extends DolibarrTriggers
         $gifUrl = $gifs[array_rand($gifs)];
 
         if (empty($conf->newclient->enabled)) return 0;     // Module not active, we do nothing
-
-        // Put here code you want to execute when a Dolibarr business events occurs.
-        // Data and type of action are stored into $object and $action
-
+        
         $langs->load("other");
         // Translations
         $langs->load("newclient@newclient");
@@ -135,7 +132,6 @@ class InterfaceNewClientTriggers extends DolibarrTriggers
                             // On félicite l'utilisateur pour cette signature !
                             $clientName = $object->thirdparty->name; 
                             $devisRef   = $object->ref;
-
                             // Message à l'utilisateur
                             $msgtxt = 'Félicitations !<br>Le client <strong>'.$clientName.'</strong> vient de signer son premier devis <strong>'.$devisRef.'</strong>.';
                             if($conf->global->NEWCLIENT_SHOW_RANDOM_GIF){
@@ -152,7 +148,35 @@ class InterfaceNewClientTriggers extends DolibarrTriggers
                             }
                             
                             setEventMessage($message, 'mesgs');
+                        
+
+                        }else{
+                            $clientName = $object->thirdparty->name; 
+                            $devisRef   = $object->ref;
+                            $msgtxt = 'Félicitations !<br>Le client <strong>'.$clientName.'</strong> vient de signer le devis <strong>'.$devisRef.'</strong>.';
+                            //A chaque signature de devis
+                            if($conf->global->NEWCLIENT_ON_EACH_PROPAL_SIGNED_SHOW_RANDOM_GIF){
+                                // On félicite l'utilisateur pour cette signature !
+                                $clientName = $object->thirdparty->name; 
+                                $devisRef   = $object->ref;
+                                // Message à l'utilisateur
+                                    $message = "
+                                    <div style='display:flex; align-items:center; gap:15px;'>
+                                        <img src=\"".$gifUrl."\" alt=\"Bien joué !\" style=\"max-height:250px; border-radius:10px;\" />
+                                        <div style='font-size:16px;'>
+                                            ".$msgtxt."
+                                        </div>
+                                    </div>
+                                    ";
+                            }else{
+                                $message = $msgtxt;
+                            }
+                            
+                            setEventMessage($message, 'mesgs');
+                                                        
                         }
+
+                        
                     }
                 }
         break;

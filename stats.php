@@ -97,9 +97,11 @@ for ($m = 1; $m <= 12; $m++) {
 $out.= '<td>Total</td>';
 $out.= '</tr>';
 // ligne de l'année
+$yearbefore = $year;
+
 for ($i = 0; $i < 3; $i++) {
-	$year = $y - $i;
-	$arrayyears[]=$year;
+	$year = $yearbefore - $i;
+	$arrayyears[$year]=$year;
 	$stats = $newclient->getNbByMonthYear($year,$userid);
 	$style=' style="background-color: rgb('.$datacolors[2-$i][0].','.$datacolors[2-$i][1].','.$datacolors[2-$i][2].') !important;" ';
 	$out.= '<tr>';
@@ -116,6 +118,8 @@ for ($i = 0; $i < 3; $i++) {
 	$out.= '</tr>';
 }
 $out.= '</table>';
+$year = $yearbefore;
+
 
 $datatransposed = array();
 
@@ -126,6 +130,7 @@ foreach ($data as $year => $months) {
         $arraymonths[sprintf('%02d', $m)] = sprintf('%02d', $m);
     }
 }
+$year = $yearbefore;
 $legend = array_keys($data);
 sort($legend);
 $filenamenb = $dir."/newclient-".$year.".png";
@@ -139,7 +144,6 @@ foreach ($datatransposed as $monthdata => $years) {
     }
     $datagraph[] = $line;
 }
-
 
 $mesg = $px1->isGraphKo();
 if (!$mesg) {
@@ -218,13 +222,16 @@ print '</td></tr>';
 
 // Year
 print '<tr><td>'.$langs->trans("Year").'</td><td>';
+$year = $yearbefore;
 if (!in_array($year, $arrayyears)) {
 	$arrayyears[$year] = $year;
 }
 if (!in_array($nowyear, $arrayyears)) {
 	$arrayyears[$nowyear] = $nowyear;
 }
+
 arsort($arrayyears);
+
 print $form->selectarray('year', $arrayyears, $year, 0, 0, 0, '', 0, 0, 0, '', 'width75');
 print '</td></tr>';
 print '<tr><td class="center" colspan="2"><input type="submit" name="submit" class="button small" value="'.$langs->trans("Refresh").'"></td></tr>';

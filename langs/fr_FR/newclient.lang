@@ -35,7 +35,8 @@ NewClientUpdateAll = Indiquer pour tous les clients la date de signature du prem
 GoUpdateAll = Lancer la mise à jour en masse
 NewClientMassUpdateDone = Date de signature du premier devis mise à jour pour tous les clients
 NewClientErrorMassUpdate = Erreur lors de la mise à jour en masse : 
-NewClientShowRandomGiff = Afficher une image aléatoire dans le message de félicitation
+NewClientShowRandomGiff = Afficher une image aléatoire dans le message de félicitation à la signature du premier devis
+NewClientShowRandomGiffOnEachPropalSigned = Afficher une image aléatoire dans le message de félicitation à la signature de <b>chaque</b> devis
 DescNEWCLIENT_LIST_GIF = Lien vers les .gif animés qui seront affichés aléatoirement.
 
 #

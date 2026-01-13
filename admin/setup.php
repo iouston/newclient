@@ -158,6 +158,7 @@ print '<td>'.$langs->trans("NewClientUpdateAll").'</td>';
 print '<td><a class="button" href="'.$_SERVER['PHP_SELF'].'?action=updateall&token='.newtoken().'">'.$langs->trans('GoUpdateAll').'</td>';
 print '</tr>';
 
+//On first propal signed
 print '<tr class="oddeven">';
 print '<td>'.$langs->trans("NewClientShowRandomGiff").'</td>';
 print '<td>';
@@ -168,6 +169,21 @@ print '<td>';
     else
     {
         print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_NEWCLIENT_SHOW_RANDOM_GIF&token='.newToken().'">'.img_picto($langs->trans("Enabled"),'switch_on').'</a>';
+    }
+    print '</td>';
+print '</tr>';
+
+//On each propal signed
+print '<tr class="oddeven">';
+print '<td>'.$langs->trans("NewClientShowRandomGiffOnEachPropalSigned").'</td>';
+print '<td>';
+    if (empty($conf->global->NEWCLIENT_ON_EACH_PROPAL_SIGNED_SHOW_RANDOM_GIF))
+    {
+        print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_NEWCLIENT_ON_EACH_PROPAL_SIGNED_SHOW_RANDOM_GIF&token='.newToken().'">'.img_picto($langs->trans("Disabled"),'switch_off').'</a>';
+    }
+    else
+    {
+        print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_NEWCLIENT_ON_EACH_PROPAL_SIGNED_SHOW_RANDOM_GIF&token='.newToken().'">'.img_picto($langs->trans("Enabled"),'switch_on').'</a>';
     }
     print '</td>';
 print '</tr>';
@@ -194,7 +210,40 @@ print '</form>';
 print '</tbody>';
 print '</table>';
 
+print load_fiche_titre($langs->trans("PreviewGifs"),'','');
+
+ $gifs = array();
+       if (!empty($conf->global->NEWCLIENT_LIST_GIF)) {
+        $gifs = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $conf->global->NEWCLIENT_LIST_GIF)));
+        }
+
+print '<div class="masonry">';
+    foreach ($gifs as $url){
+    	print '<div class="masonry-item">';
+    	print '<img src="'.htmlspecialchars($url).'" alt="'.$url.'" title="'.$url.'" loading="lazy">';
+    	print '</div>';
+    }
+ print '</div>';
 
 // Page end
 dol_fiche_end();
 llxFooter();
+
+?>
+<style>
+	.masonry {
+    column-count: 4; 
+    column-gap: 1rem;
+}
+
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+}
+
+.masonry-item img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+}
+</style>
