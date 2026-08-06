@@ -71,20 +71,31 @@ if (! $res > 0) $error++;
 if ($action == 'updateall')
 {
 	$db->begin();
-    $sql = "UPDATE ".MAIN_DB_PREFIX."societe_extrafields se
-            JOIN (
-                SELECT p.fk_soc AS socid,
-                       MIN(p.date_signature) AS date_premier_devis_signe
-                FROM ".MAIN_DB_PREFIX."propal p
-                WHERE p.fk_statut = 2
-                  AND p.entity = ".((int) $conf->entity)."
-                GROUP BY p.fk_soc
-            ) x ON x.socid = se.fk_object
-            SET se.date_signature_premier_devis = x.date_premier_devis_signe";
+    // $sql = "UPDATE ".MAIN_DB_PREFIX."societe_extrafields se
+    //         JOIN (
+    //             SELECT p.fk_soc AS socid,
+    //                    MIN(p.date_signature) AS date_premier_devis_signe
+    //             FROM ".MAIN_DB_PREFIX."propal p
+    //             WHERE p.fk_statut = 2
+    //               AND p.entity = ".((int) $conf->entity)."
+    //             GROUP BY p.fk_soc
+    //         ) x ON x.socid = se.fk_object
+    //         SET se.date_signature_premier_devis = x.date_premier_devis_signe";
+    //         
+    
+    $sql = "INSERT INTO ".MAIN_DB_PREFIX."societe_extrafields (fk_object, date_signature_premier_devis)
+            SELECT p.fk_soc, MIN(p.date_signature)
+            FROM ".MAIN_DB_PREFIX."propal p
+            WHERE p.fk_statut = 2
+              AND p.entity = ".((int) $conf->entity)."
+            GROUP BY p.fk_soc
+            ON DUPLICATE KEY UPDATE
+              date_signature_premier_devis = VALUES(date_signature_premier_devis)";
 
     dol_syslog("newclient updateall sql=".$sql, LOG_DEBUG);
 
     $resql = $db->query($sql);
+
     if ($resql) {
         $db->commit();
         setEventMessage($langs->trans("NewClientMassUpdateDone"));
