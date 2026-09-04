@@ -73,7 +73,7 @@ class modNewClient extends DolibarrModules
 		$this->editor_url = 'http://www.iouston.com';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
-		$this->version = '1.0.0';
+		$this->version = '1.0.1';
 		$this->url_last_version = "https://www.iouston.com/dolibarr_modules_version/suivi-nouveaux-clients.txt";
 		// Key used in llx_const table to save module status enabled/disabled (where SITFAC is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
@@ -97,7 +97,7 @@ class modNewClient extends DolibarrModules
 									'models' => 0,                                   	// Set this to 1 if module has its own models directory (core/modules/xxx)
 									'css' => array(),	// Set this to relative path of css file if module has its own css file
 	 								'js' => array(),          // Set this to relative path of js file if module must load a js on all pages
-									'hooks' => array() 	// Set here all hooks context managed by module. You can also set hook context 'all'
+									'hooks' => array('propalcard') 	// Set here all hooks context managed by module. You can also set hook context 'all'
 		                        );
 
 		// Data directories to create when module is enabled.
@@ -186,6 +186,42 @@ class modNewClient extends DolibarrModules
 		include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		$extrafields = new ExtraFields($this->db);
 		$result = $extrafields->addExtraField('date_signature_premier_devis', 'Date signature du premier devis', 'date', 100, 1, 'societe');
+		$result = $extrafields->addExtraField(
+		    'type_refus',                          // Code de l'attribut
+		    'Type de refus',                       // Libellé
+		    'select',                              // Type = liste de sélection
+		    1,                                      // Position (à adapter selon vos autres extrafields)
+		    '',                                     // Taille (non utilisée pour un select)
+		    'propal',                              // Élément Dolibarr concerné - à adapter si besoin
+		    0,                                      // Unique
+		    0,                                      // Obligatoire
+		    '',                                     // Valeur par défaut
+		    array(
+		        'options' => array(
+		            'delais_reponse'   => 'Délai de réponse',
+		            'non_attributaire' => 'Non attributaire',
+		            'prix'             => 'Prix',
+		            'ne_sais_pas'      => 'Ne sais pas',
+		            'projet_annule'    => 'Projet annulé',
+		            'projet_reporte'   => 'Projet reporté',
+		        )
+		    ),
+		    1,                                      // alwayseditable = 1 -> peut toujours être édité
+		    '',                                     // Perms
+		    1,                                      // Visibilité = 1
+		    "En cas de devis non signé, merci d'indiquer le type de refus", // Texte d'aide
+		    '',                                     // Computed
+		    '',                                     // Entity
+		    '',                                     // Langfile
+		    1,                                      // Enabled
+		    0,                                      // Totalizable
+		    0,                                      // Printable
+		    array(
+		        'css'     => 'type_refus',         // CSS pages création/édition
+		        'cssview' => 'type_refus',         // CSS pages de visualisation
+		        'csslist' => 'type_refus',         // CSS sur les listes
+		    )
+);
 		
 		return $this->_init($sql, $options);
 	}

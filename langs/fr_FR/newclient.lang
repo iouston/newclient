@@ -60,6 +60,7 @@ ChangeLogVersion = Version
 ChangeLogDate = Date
 ChangeLogUpdates = Modification apportées
 FirstVersion = Première version
+Version101 = Ajoute un extrafield type_refus et demande à qualifier le refus du devis lors de la cloture.
 #
 NewClientStatistics = Acquisition nouveaux clients
 NumberOfNewClientByMonth = Évolution du nombre de nouveaux clients par mois et par an

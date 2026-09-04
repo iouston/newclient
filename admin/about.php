@@ -49,6 +49,7 @@ if (! $user->admin) {
 
 $versions = array(
     array('version' => '1.0.0', 'date' => '25/09/2025', 'updates' => $langs->trans('FirstVersion')),
+    array('version' => '1.0.1', 'date' => '04/09/2026', 'updates' => $langs->trans('Version101')),
 );
 
 /*
