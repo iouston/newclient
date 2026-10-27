@@ -1,0 +1,155 @@
+# Copyright (C) 2017 Mikael Carlavan <contact@mika-carl.fr>
+# Copyright (C) 2025 Julien Marchand <julien.marchand@iouston.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+#
+# Genérico
+#
+
+# Module label 'ModuleNewClientName'
+ModuleNewClientName = Seguimiento de nuevos clientes
+# Module description 'ModuleNewClientDesc'
+ModuleNewClientDesc = ¡Permite seguir la evolución de la captación de nuevos clientes!
+
+#
+#
+NewClientSetup = Configuración del módulo
+Settings = Ajustes
+NewClientSetupPage = El módulo de seguimiento de nuevos clientes registra en la ficha del tercero la fecha de firma del primer presupuesto. Al firmarse el primer presupuesto, se muestra un mensaje de felicitación con un gif animado para motivar a los equipos. También puede actualizar toda su base de datos para indicar la fecha de captación de cada cliente existente.
+
+NewClientOptions = Opciones
+Settingslist = Lista de opciones del módulo
+NewClientUpdateAll = Indicar para todos los clientes la fecha de firma del primer presupuesto
+GoUpdateAll = Lanzar la actualización masiva
+NewClientMassUpdateDone = Fecha de firma del primer presupuesto actualizada para todos los clientes
+NewClientErrorMassUpdate = Error durante la actualización masiva: 
+NewClientShowRandomGiff = Mostrar una imagen aleatoria en el mensaje de felicitación al firmarse el primer presupuesto
+NewClientShowRandomGiffOnEachPropalSigned = Mostrar una imagen aleatoria en el mensaje de felicitación al firmarse <b>cada</b> presupuesto
+DescNEWCLIENT_LIST_GIF = Enlaces a los .gif animados que se mostrarán de forma aleatoria.
+
+#
+# Página Acerca de
+#
+About = Acerca de
+NewClientAbout = Acerca del módulo
+NewClientAboutPage = Página Acerca del módulo
+NewClientAboutDescLong = Este módulo ha sido desarrollado por <a href="https://www.iouston.com">Julien Marchand</a> para <a href="http://www.iouston.com">iouston informatique </a>.<br />La documentación del módulo está disponible en línea:<br /><a href="%s">%s</a>
+MaintenanceAndSupportTitle = Mantenimiento y soporte
+MaintenanceAndSupportDescLong = No se proporciona soporte de uso ni de instalación. Si lo necesita, podemos acompañarle, corriendo usted con el coste de la intervención.   <br />La compra de este módulo le da derecho a un mantenimiento correctivo durante un año a partir de la fecha de adquisición. Las <a href="https://iouston.space/gestion/ticketsup/public/">solicitudes de soporte deben realizarse a través de nuestra plataforma de soporte</a>.
+UpdateTitle = Actualización
+UpdateDescLong = La compra de este módulo le permite obtener gratuitamente las actualizaciones del módulo durante 1 año a partir de la fecha de compra.
+ModulesTitle = Nuestros otros módulos:
+ModulesDescLong = Encuentre todos <a href="http://www.iouston.com/systeme-gestion-entreprise-dolibarr/modules-dolibarr/">nuestros otros módulos en nuestra web</a> y en <a href="https://www.dolistore.com/fr/recherche?controller=search&orderby=position&orderway=desc&search_query=iouston&submit_search=">dolistore</a>.
+IoustonDesc = Especialista en Dolibarr: integración a medida, desarrollo específico, formación, mantenimiento.
+
+# ChangeLog
+ChangeLog = ChangeLog
+ChangeLogVersion = Versión
+ChangeLogDate = Fecha
+ChangeLogUpdates = Cambios realizados
+FirstVersion = Primera versión
+Version101 = Añade un campo adicional type_refus y solicita indicar el motivo del rechazo al cerrar el presupuesto.
+#
+NewClientStatistics = Captación de nuevos clientes
+NumberOfNewClientByMonth = Evolución del número de nuevos clientes por mes y por año
+CAGeneratedByNewClient = Volumen de negocio generado por los nuevos clientes desde: 
+NBFac = N.º facturas
+CAGenerated = Volumen de negocio sin IVA
+NewClientGeneratedCA = nuevos clientes han generado volumen de negocio
+HelpNewClientStatistics = Los nuevos clientes se calculan a partir de la fecha de firma del primer presupuesto. Un cliente cuyo presupuesto pasó a 'firmado' en 08/2025 se contabiliza en 08/2025. ¡Atención! Se tienen en cuenta los nuevos clientes de la entidad, incluidos los clientes compartidos entre entidades en caso de multiempresa.
+HelpCACalculMethod = El volumen de negocio se calcula sobre las facturas emitidas en el año por los clientes cuyo primer presupuesto se firmó en el mes y año seleccionados. Es decir, si filtra por 09/2025 se tienen en cuenta todas las facturas de 2025 de un cliente que firmó su presupuesto en septiembre de 2025.
+NewClientMenu = Seguimiento de nuevos clientes
+NewClientTab = Seguimiento de nuevos clientes
+
+Version102 = Los errores que bloquean la firma o el cierre de un presupuesto (p. ej.: presupuesto sin proyecto) ahora se muestran y anulan todo el cierre; no hay mensaje de felicitación si se rechaza la firma; corrección de un error fatal en PHP 8 cuando la lista de imágenes está vacía. Nueva página Acerca de.
+
+#
+# Página Acerca de (plantilla iouston)
+#
+NewClientHowItWorks = Cómo funciona
+NewClientHowItWorksIntro = Seguimiento de nuevos clientes mide la captación de nuevos clientes a partir de la firma de su primer presupuesto, y motiva a los equipos comerciales con un mensaje de felicitación en cada victoria.
+NewClientHowItWorksStep1 = Active el módulo: se añade un campo «Fecha de firma del primer presupuesto» a los terceros, así como un campo «tipo de rechazo» a los presupuestos.
+NewClientHowItWorksStep2 = En los <strong>Ajustes</strong>, lance la actualización masiva para completar la fecha de captación de sus clientes existentes.
+NewClientHowItWorksStep3 = Elija mostrar una imagen aleatoria en el primer presupuesto firmado o en cada presupuesto firmado, y pegue la lista de enlaces a sus imágenes animadas.
+NewClientHowItWorksStep4 = Al cerrar un presupuesto, indique el estado (firmado o no firmado), una nota y, en caso de pérdida, el motivo del rechazo.
+NewClientHowItWorksStep5 = Siga la evolución de los nuevos clientes y del volumen de negocio que generan desde el menú <strong>Seguimiento de nuevos clientes</strong>.
+NewClientHowItWorksNote = Un cliente se cuenta como nuevo el mes en que su primer presupuesto pasa a firmado; la fecha se registra una sola vez y ya no se modifica después.
+NewClientFeatures = Funcionalidades
+NewClientFeatureFirstSignature = <strong>Fecha de captación automática</strong>: la fecha de firma del primer presupuesto se registra en la ficha del tercero.
+NewClientFeatureCongrats = <strong>Felicitaciones en el primer presupuesto</strong>: un mensaje celebra la firma de un nuevo cliente, con una imagen animada opcional.
+NewClientFeatureEachSignature = <strong>Felicitaciones en cada firma</strong>: opción para celebrar también cada presupuesto firmado por un cliente existente.
+NewClientFeatureGifList = <strong>Imágenes personalizables</strong>: usted elige la lista de imágenes animadas, sorteadas al azar en cada mensaje.
+NewClientFeatureMassUpdate = <strong>Recuperación del historial</strong>: una actualización masiva completa la fecha de captación de todos los clientes existentes.
+NewClientFeatureStatsByMonth = <strong>Estadísticas de captación</strong>: número de nuevos clientes por mes y por año.
+NewClientFeatureStatsCA = <strong>Volumen de negocio de los nuevos clientes</strong>: volumen de negocio sin IVA y número de facturas generados por los clientes captados en un periodo.
+NewClientFeatureStatsFilters = <strong>Filtros de análisis</strong>: filtrado por año, mes y usuario creador.
+NewClientFeatureRefusalReason = <strong>Motivo de los presupuestos perdidos</strong>: al cerrar un presupuesto no firmado, se solicita y registra un tipo de rechazo.
+NewClientFeatureSafeClose = <strong>Cierre fiable</strong>: si otro módulo bloquea la firma (p. ej.: presupuesto sin proyecto), se muestra el error y no se guarda nada.
+NewClientFeatureMultiEntity = <strong>Multientidad</strong>: los nuevos clientes se calculan sobre la entidad actual, incluidos los terceros compartidos.
+NewClientFeatureMenu = <strong>Acceso directo</strong>: un menú dedicado da acceso al cuadro de seguimiento.
+NewClientModuleInfo = Información del módulo
+NewClientEditor = Editor
+NewClientLicense = Licencia de uso
+NewClientMinDolibarr = Versión mínima de Dolibarr
+NewClientMinPHP = Versión mínima de PHP
+NewClientDebugInfo = Información de diagnóstico
+NewClientDebugInfoHelp = Copie esta información y péguela en su ticket cuando contacte con el soporte: nos ayuda a reproducir su entorno.
+NewClientDebugCopy = Copiar
+NewClientCopied = Copiado al portapapeles
+NewClientEditorBy = Módulo editado por iouston
+NewClientIoustonSpecialist = iouston es especialista en Dolibarr: integración, desarrollo, alojamiento, formación, mantenimiento.
+NewClientPreferredPartner = iouston tiene la etiqueta <strong>Preferred Partner</strong> de Dolibarr.
+NewClientSeePreferredPartners = Ver la lista de Preferred Partners de Dolibarr
+NewClientMadeWithLove = Módulos hechos con {heart} en {flag}
+NewClientPurchaseIncludes = Cada compra incluye las actualizaciones y el soporte técnico durante 1 año.
+NewClientRating = Su opinión
+NewClientProblemsGoToSupport = Para informar de un problema o un error, utilice el <a href="%s" target="_blank" rel="noopener noreferrer">soporte</a>.
+
+#
+# Cierre de un presupuesto con motivo
+#
+CloseWithReason = Cerrar el presupuesto
+ConfirmCloseAsPropal = Elija el estado de cierre del presupuesto. En caso de rechazo, indique el motivo.
+SetStatus = Estado
+SetNote = Nota (añadida a la nota privada)
+SetTypeRefus = Motivo del rechazo
+
+NumberOfNewClient = Número de nuevos clientes
+
+#
+# Mensajes de felicitación
+#
+NewClientCongratsFirstPropal = ¡Enhorabuena!<br>El cliente <strong>%s</strong> acaba de firmar su primer presupuesto <strong>%s</strong>.
+NewClientCongratsPropal = ¡Enhorabuena!<br>El cliente <strong>%s</strong> acaba de firmar el presupuesto <strong>%s</strong>.
+NewClientWellDone = ¡Bien hecho!
+
+#
+# Página Acerca de: enlaces y formulario de comentarios
+#
+NewClientUsefulLinks = Enlaces útiles
+NewClientDocumentation = Documentación
+NewClientSupport = Soporte
+NewClientLove = amor
+NewClientIdeaSuggestion = ¿Una idea, una sugerencia?
+NewClientFeedbackIntro = Este formulario nos envía directamente sus comentarios; se centralizan junto con los de los demás usuarios de este módulo.
+NewClientFeedbackCompany = Empresa
+NewClientFeedbackDetail = Detalle
+NewClientFeedbackPlaceholder = Describa su idea o su sugerencia...
+NewClientSend = Enviar
+NewClientFeedbackThanks = Gracias, sus comentarios se han enviado correctamente.
+NewClientFeedbackError = Se ha producido un error durante el envío.
+
+PreviewGifs = Vista previa de las imágenes

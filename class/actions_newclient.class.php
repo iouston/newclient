@@ -50,7 +50,8 @@ class ActionsNewClient
                 $formquestions = array();                      
                 
                 //Statut
-                $options=array(2=>$langs->trans('Signed'),3=>$langs->trans('NotSigned'));
+                $langs->loadLangs(array('propal', 'newclient@newclient'));
+                $options=array(2=>$langs->trans('PropalStatusSigned'),3=>$langs->trans('PropalStatusNotSigned'));
                 $formquestions[] = array(
                     'type'   => 'select',
                     'name'   => 'status',
@@ -82,24 +83,41 @@ class ActionsNewClient
 
     function doActions($parameters, &$object, &$action, $hookmanager)
     {
-        global $langs, $db, $mysoc, $conf, $user;
-        
-        
-        $langs->load('bonlivraison@bonlivraison');
+        global $langs, $db, $conf, $user;
 
-        if($action=='closepropalwithreason'){
-            $status=GETPOSTINT('status');
-            $note=GETPOST('note');
-            $reason=GETPOST('options_type_refus');
-                                    
-            $noteconcat=$object->note_private.chr(10).$note;
-            $object->array_options['options_type_refus']=$reason;
-            $result=$object->update($user);
-            $result = $object->closeProposal($user, $status, $noteconcat);            
+        $langs->load('newclient@newclient');
+
+        if ($object->element == 'propal' && $action == 'closepropalwithreason') {
+            $status = GETPOSTINT('status');
+            $note   = GETPOST('note', 'restricthtml');
+            $reason = GETPOST('options_type_refus', 'alphanohtml');
+
+            $noteconcat = $object->note_private.chr(10).$note;
+            $object->array_options['options_type_refus'] = $reason;
+
+            // Une seule transaction : si un trigger bloque la cloture (ex : devis sans projet),
+            // le type de refus n'est pas enregistre non plus
+            $db->begin();
+            $result = $object->update($user);
+            if ($result > 0) {
+                $result = $object->closeProposal($user, $status, $noteconcat);
+            }
+
+            if ($result < 0) {
+                $db->rollback();
+                // Affiche les erreurs remontees par les triggers (closeProposal les fusionne dans $object->errors)
+                setEventMessages($object->error, $object->errors, 'errors');
+                $action = '';
+                return 0;
+            }
+
+            $db->commit();
+            header('Location: '.$_SERVER['PHP_SELF'].'?id='.((int) $object->id));
+            exit;
         }
 
         $this->resprints = '';
-        return 0;   
+        return 0;
     }
 
 }

@@ -90,11 +90,11 @@ $arraymonths = array();
 
 $out= '<table class="noborder centpercent">';
 $out.= '<tr class="liste_titre">';
-$out.= '<td>Année</td>';
+$out.= '<td>'.$langs->trans('Year').'</td>';
 for ($m = 1; $m <= 12; $m++) {
     $out.= '<td align="center">'.dol_print_date(dol_mktime(12,0,0,$m,1,$y), '%b').'</td>';
 }
-$out.= '<td>Total</td>';
+$out.= '<td>'.$langs->trans('Total').'</td>';
 $out.= '</tr>';
 // ligne de l'année
 $yearbefore = $year;

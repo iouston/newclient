@@ -93,95 +93,64 @@ class InterfaceNewClientTriggers extends DolibarrTriggers
      */
     public function runTrigger($action, $object, User $user, Translate $langs, Conf $conf)
     {
-
-        global $langs, $db, $conf;
-
-        //image aléatoire de féliciations
-        $gifs = array();
-       if (!empty($conf->global->NEWCLIENT_LIST_GIF)) {
-        $gifs = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $conf->global->NEWCLIENT_LIST_GIF)));
-        }
-        
-        $gifUrl = $gifs[array_rand($gifs)];
-
         if (empty($conf->newclient->enabled)) return 0;     // Module not active, we do nothing
-        
-        $langs->load("other");
-        // Translations
-        $langs->load("newclient@newclient");
+        if ($action != 'PROPAL_CLOSE_SIGNED') return 0;
 
-        switch ($action) {
-
-            // Proposals
-            case 'PROPAL_CLOSE_SIGNED':
-            
-                $socid = $object->socid;
-                $date_signature = $object->date_signature;
-
-                if ($socid > 0 && $date_signature) {
-                    // Vérifie si déjà renseigné
-                    $sql = "SELECT date_signature_premier_devis FROM ".MAIN_DB_PREFIX."societe_extrafields WHERE fk_object = ".((int) $socid);
-                   $resql = $db->query($sql);
-                    if ($resql) {
-                        $obj = $db->fetch_object($resql);
-
-                        if (empty($obj->date_signature_premier_devis)) {
-                        $sql = "UPDATE ".MAIN_DB_PREFIX."societe_extrafields SET date_signature_premier_devis = '".$db->idate($date_signature)."' WHERE fk_object = ".((int) $socid);
-                        $db->query($sql);
-
-                            // On félicite l'utilisateur pour cette signature !
-                            $clientName = $object->thirdparty->name; 
-                            $devisRef   = $object->ref;
-                            // Message à l'utilisateur
-                            $msgtxt = 'Félicitations !<br>Le client <strong>'.$clientName.'</strong> vient de signer son premier devis <strong>'.$devisRef.'</strong>.';
-                            if($conf->global->NEWCLIENT_SHOW_RANDOM_GIF){
-                                $message = "
-                                <div style='display:flex; align-items:center; gap:15px;'>
-                                    <img src=\"".$gifUrl."\" alt=\"Bien joué !\" style=\"max-height:250px; border-radius:10px;\" />
-                                    <div style='font-size:16px;'>
-                                        ".$msgtxt."
-                                    </div>
-                                </div>
-                                ";
-                            }else{
-                                $message = $msgtxt;
-                            }
-                            
-                            setEventMessage($message, 'mesgs');
-                        
-
-                        }else{
-                            $clientName = $object->thirdparty->name; 
-                            $devisRef   = $object->ref;
-                            $msgtxt = 'Félicitations !<br>Le client <strong>'.$clientName.'</strong> vient de signer le devis <strong>'.$devisRef.'</strong>.';
-                            //A chaque signature de devis
-                            if($conf->global->NEWCLIENT_ON_EACH_PROPAL_SIGNED_SHOW_RANDOM_GIF){
-                                // On félicite l'utilisateur pour cette signature !
-                                $clientName = $object->thirdparty->name; 
-                                $devisRef   = $object->ref;
-                                // Message à l'utilisateur
-                                    $message = "
-                                    <div style='display:flex; align-items:center; gap:15px;'>
-                                        <img src=\"".$gifUrl."\" alt=\"Bien joué !\" style=\"max-height:250px; border-radius:10px;\" />
-                                        <div style='font-size:16px;'>
-                                            ".$msgtxt."
-                                        </div>
-                                    </div>
-                                    ";
-                            }else{
-                                $message = $msgtxt;
-                            }
-                            
-                            setEventMessage($message, 'mesgs');
-                                                        
-                        }
-
-                        
-                    }
-                }
-        break;
+        // Pas de felicitations si specialtriggers refuse la signature (devis sans projet) :
+        // selon la version de Dolibarr, les triggers suivants peuvent s'executer malgre son -1
+        if (!empty($conf->specialtriggers->enabled)
+            && getDolGlobalString('SPECIALTRIGGER_PROPAL_CLOSE_SIGNED_ADD_PROJECT_BUDGET')
+            && (empty($object->fk_project) || (int) $object->fk_project <= 0)) {
+            return 0;
         }
 
+        $langs->loadLangs(array("other", "newclient@newclient"));
+
+        $socid = (int) $object->socid;
+        $date_signature = $object->date_signature;
+        if ($socid <= 0 || empty($date_signature)) return 0;
+
+        if (empty($object->thirdparty)) $object->fetch_thirdparty();
+
+        // Image aleatoire de felicitations (array_rand sur un tableau vide = erreur fatale en PHP 8)
+        $gifUrl = '';
+        $gifs = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', getDolGlobalString('NEWCLIENT_LIST_GIF')))));
+        if (count($gifs)) $gifUrl = $gifs[array_rand($gifs)];
+
+        $sql = "SELECT date_signature_premier_devis FROM ".MAIN_DB_PREFIX."societe_extrafields WHERE fk_object = ".$socid;
+        $resql = $this->db->query($sql);
+        if (!$resql) {
+            $this->errors[] = $this->db->lasterror();
+            return -1;
+        }
+        $obj = $this->db->fetch_object($resql);
+
+        $clientName = dol_escape_htmltag($object->thirdparty->name);
+        $devisRef   = dol_escape_htmltag($object->ref);
+
+        if (empty($obj->date_signature_premier_devis)) {
+            $sql = "UPDATE ".MAIN_DB_PREFIX."societe_extrafields SET date_signature_premier_devis = '".$this->db->idate($date_signature)."' WHERE fk_object = ".$socid;
+            if (!$this->db->query($sql)) {
+                $this->errors[] = $this->db->lasterror();
+                return -1;
+            }
+            // transnoentitiesnoconv : les parametres sont deja echappes, trans() les re-encoderait (et laisserait passer '<a ')
+            $msgtxt  = $langs->transnoentitiesnoconv('NewClientCongratsFirstPropal', $clientName, $devisRef);
+            $showGif = getDolGlobalInt('NEWCLIENT_SHOW_RANDOM_GIF');
+        } else {
+            $msgtxt  = $langs->transnoentitiesnoconv('NewClientCongratsPropal', $clientName, $devisRef);
+            $showGif = getDolGlobalInt('NEWCLIENT_ON_EACH_PROPAL_SIGNED_SHOW_RANDOM_GIF');
+        }
+
+        if ($showGif && $gifUrl) {
+            $message = "<div style='display:flex; align-items:center; gap:15px;'>"
+                ."<img src=\"".dol_escape_htmltag($gifUrl)."\" alt=\"".dol_escape_htmltag($langs->transnoentitiesnoconv('NewClientWellDone'))."\" style=\"max-height:250px; border-radius:10px;\" />"
+                ."<div style='font-size:16px;'>".$msgtxt."</div></div>";
+        } else {
+            $message = $msgtxt;
+        }
+
+        setEventMessage($message, 'mesgs');
 
         return 1;
     }

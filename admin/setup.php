@@ -33,7 +33,7 @@ dol_include_once("/newclient/lib/newclient.lib.php");
 include DOL_DOCUMENT_ROOT.'/core/actions_setmoduleoptions.inc.php';
 
 // Translations
-$langs->load("newclient@newclient");
+$langs->loadLangs(array("admin", "newclient@newclient"));
 
 // Access control
 if (! $user->admin) accessforbidden();
@@ -161,8 +161,8 @@ print load_fiche_titre($langs->trans("Settingslist"),'','');
 print '<table class="noborder" width="100%">';
 print '<tbody>';
 print '<tr class="liste_titre">';
-print '<td>'.$langs->trans("Libellé").'</td>';
-print '<td>'.$langs->trans("Valeur").'</td>';
+print '<td>'.$langs->trans("Label").'</td>';
+print '<td>'.$langs->trans("Value").'</td>';
 print "</tr>\n";
 print '<tr class="oddeven">';
 print '<td>'.$langs->trans("NewClientUpdateAll").'</td>';

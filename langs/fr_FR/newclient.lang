@@ -72,3 +72,83 @@ HelpNewClientStatistics = Les nouveaux clients sont calculés par rapport à la 
 HelpCACalculMethod = Le CA est calculé sur les factures générées sur l'année par les clients à partir de la date de signature du premier devis correspondant au mois et à l'année prise en compte. Autrement dit on prend en compte toutes les factures de l'année 2025 d'un client qui aurait signé son devis en septembre 2025 si on filtre sur 09/2025.
 NewClientMenu = Suivi nouveaux clients
 NewClientTab = Suivi nouveaux clients
+
+Version102 = Les erreurs bloquant la signature ou la clôture d'un devis (ex : devis sans projet) sont désormais affichées et annulent toute la clôture ; pas de message de félicitations si la signature est refusée ; correction d'une erreur fatale en PHP 8 quand la liste d'images est vide. Nouvelle page À propos.
+
+#
+# Page A propos (modele iouston)
+#
+NewClientHowItWorks = Comment ça marche
+NewClientHowItWorksIntro = Suivi nouveaux clients mesure l'acquisition de nouveaux clients à partir de la signature de leur premier devis, et encourage les équipes commerciales avec un message de félicitations à chaque victoire.
+NewClientHowItWorksStep1 = Activez le module : un champ « Date signature du premier devis » est ajouté aux tiers, ainsi qu'un champ « type de refus » aux devis.
+NewClientHowItWorksStep2 = Dans les <strong>Réglages</strong>, lancez la mise à jour en masse pour renseigner la date d'acquisition de vos clients existants.
+NewClientHowItWorksStep3 = Choisissez d'afficher une image aléatoire au premier devis signé, ou à chaque devis signé, et collez la liste des liens vers vos images animées.
+NewClientHowItWorksStep4 = Lors de la clôture d'un devis, indiquez le statut (signé ou non signé), une note et, en cas de perte, la raison du refus.
+NewClientHowItWorksStep5 = Suivez l'évolution des nouveaux clients et du CA qu'ils génèrent depuis le menu <strong>Suivi nouveaux clients</strong>.
+NewClientHowItWorksNote = Un client est compté comme nouveau le mois où son premier devis passe au statut signé ; la date est enregistrée une seule fois et n'est plus modifiée ensuite.
+NewClientFeatures = Fonctionnalités
+NewClientFeatureFirstSignature = <strong>Date d'acquisition automatique</strong> : la date de signature du premier devis est enregistrée sur la fiche du tiers.
+NewClientFeatureCongrats = <strong>Félicitations au premier devis</strong> : un message salue la signature d'un nouveau client, avec une image animée en option.
+NewClientFeatureEachSignature = <strong>Félicitations à chaque signature</strong> : option pour célébrer aussi chaque devis signé par un client existant.
+NewClientFeatureGifList = <strong>Images personnalisables</strong> : vous choisissez la liste des images animées, tirées au hasard à chaque message.
+NewClientFeatureMassUpdate = <strong>Reprise de l'historique</strong> : une mise à jour en masse renseigne la date d'acquisition de tous les clients existants.
+NewClientFeatureStatsByMonth = <strong>Statistiques d'acquisition</strong> : nombre de nouveaux clients par mois et par an.
+NewClientFeatureStatsCA = <strong>CA des nouveaux clients</strong> : chiffre d'affaires HT et nombre de factures générés par les clients acquis sur une période.
+NewClientFeatureStatsFilters = <strong>Filtres d'analyse</strong> : filtrage par année, mois et utilisateur créateur.
+NewClientFeatureRefusalReason = <strong>Raison des devis perdus</strong> : à la clôture d'un devis non signé, un type de refus est demandé et enregistré.
+NewClientFeatureSafeClose = <strong>Clôture fiable</strong> : si un autre module bloque la signature (ex : devis sans projet), l'erreur est affichée et rien n'est enregistré.
+NewClientFeatureMultiEntity = <strong>Multi-entité</strong> : les nouveaux clients sont calculés sur l'entité courante, y compris les tiers partagés.
+NewClientFeatureMenu = <strong>Accès direct</strong> : un menu dédié donne accès au tableau de suivi.
+NewClientModuleInfo = Informations sur le module
+NewClientEditor = Éditeur
+NewClientLicense = Licence d'utilisation
+NewClientMinDolibarr = Version minimale de Dolibarr
+NewClientMinPHP = Version minimale de PHP
+NewClientDebugInfo = Informations de dépannage
+NewClientDebugInfoHelp = Copiez ces informations et collez-les dans votre ticket lorsque vous contactez le support : elles nous aident à reproduire votre environnement.
+NewClientDebugCopy = Copier
+NewClientCopied = Copié dans le presse-papier
+NewClientEditorBy = Module édité par iouston
+NewClientIoustonSpecialist = iouston est spécialiste de Dolibarr : intégration, développement, hébergement, formation, maintenance.
+NewClientPreferredPartner = iouston est labellisé <strong>Preferred Partner</strong> Dolibarr.
+NewClientSeePreferredPartners = Voir la liste des Preferred Partners Dolibarr
+NewClientMadeWithLove = Des modules faits avec {heart} en {flag}
+NewClientPurchaseIncludes = Chaque achat donne droit aux mises à jour et au support technique pendant 1 an.
+NewClientRating = Votre avis
+NewClientProblemsGoToSupport = Pour signaler un problème ou un bug, merci de passer par le <a href="%s" target="_blank" rel="noopener noreferrer">support</a>.
+
+#
+# Clôture d'un devis avec raison
+#
+CloseWithReason = Clôturer le devis
+ConfirmCloseAsPropal = Choisissez le statut de clôture du devis. En cas de refus, précisez-en la raison.
+SetStatus = Statut
+SetNote = Note (ajoutée à la note privée)
+SetTypeRefus = Raison du refus
+
+NumberOfNewClient = Nombre de nouveaux clients
+
+#
+# Messages de félicitations
+#
+NewClientCongratsFirstPropal = Félicitations !<br>Le client <strong>%s</strong> vient de signer son premier devis <strong>%s</strong>.
+NewClientCongratsPropal = Félicitations !<br>Le client <strong>%s</strong> vient de signer le devis <strong>%s</strong>.
+NewClientWellDone = Bien joué !
+
+#
+# Page À propos : liens et formulaire de retour
+#
+NewClientUsefulLinks = Liens utiles
+NewClientDocumentation = Documentation
+NewClientSupport = Support
+NewClientLove = amour
+NewClientIdeaSuggestion = Une idée, une suggestion ?
+NewClientFeedbackIntro = Ce formulaire nous envoie directement votre retour ; il est centralisé avec ceux des autres utilisateurs de ce module.
+NewClientFeedbackCompany = Société
+NewClientFeedbackDetail = Détail
+NewClientFeedbackPlaceholder = Décrivez votre idée ou votre suggestion...
+NewClientSend = Envoyer
+NewClientFeedbackThanks = Merci, votre retour a bien été envoyé.
+NewClientFeedbackError = Une erreur est survenue lors de l'envoi.
+
+PreviewGifs = Aperçu des images
